@@ -1,3 +1,3 @@
-# certificate-generator-stdal
+# certificate-generator-standalone
 this is just the modification of certificate generator,
-it takes the credentials  and generates the certificate
+it takes the credentials such as name, track and generates the certificate accordingly
