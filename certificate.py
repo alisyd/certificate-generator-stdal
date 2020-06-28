@@ -38,27 +38,27 @@ class Certificate():
         print(self.user_id)
         if(len(track_list)==1):
             track_font_size=55
-            track_name=track_list[0].capitalize()
+            track_name=track_list[0]
         if((len(track_list)==2)):
             if((len(track_list[0]) + len(track_list[1])) > 15):
                 track_font_size=45
         
-                track_name = track_list[0].capitalize() + '\n' + track_list[1].capitalize()
+                track_name = track_list[0] + '\n' + track_list[1]
             else:
                 track_font_size=55
-                track_name = track_list[0].capitalize() + '\n' + track_list[1].capitalize()
+                track_name = track_list[0] + '\n' + track_list[1]
             
         elif((len(track_list)==3)):
             if((len(track_list[0]) + len(track_list[1])) < 14):
                 track_font_size=50
-                track_name = track_list[0].capitalize() + ' ' + track_list[1].capitalize() + '\n' + track_list[2].capitalize()                            
+                track_name = track_list[0] + ' ' + track_list[1] + '\n' + track_list[2]                            
             else:
                 track_font_size=50
-                track_name = track_list[0].capitalize() + ' ' + track_list[1].capitalize() + '\n' + track_list[2].capitalize()
+                track_name = track_list[0] + ' ' + track_list[1] + '\n' + track_list[2]
                 
         elif((len(track_list)==4)):
             track_font_size=50
-            track_name = track_list[0].capitalize() + ' ' + track_list[1].capitalize() + '\n' + track_list[2].capitalize() + ' ' + track_list[3].capitalize()
+            track_name = track_list[0] + ' ' + track_list[1] + '\n' + track_list[2] + ' ' + track_list[3]
         
         
         
@@ -66,22 +66,22 @@ class Certificate():
             if((len(name_list[0]) + len(name_list[1])) > 10):
                 font_size=60
         
-                print_name = name_list[0].upper() + '\n' + name_list[1].upper()
+                print_name = name_list[0] + '\n' + name_list[1]
             else:
                 font_size=70
-                print_name = name_list[0].upper() + '\n' + name_list[1].upper()
+                print_name = name_list[0] + '\n' + name_list[1]
             
         elif((len(name_list)==3)):
             if((len(name_list[0]) + len(name_list[1])) < 14):
                 font_size=60
-                print_name = name_list[0].upper() + ' ' + name_list[1].upper() + '\n' + name_list[2].upper()                            
+                print_name = name_list[0] + ' ' + name_list[1] + '\n' + name_list[2]                            
             else:
                 font_size=50
-                print_name = name_list[0].upper() + ' ' + name_list[1].upper() + '\n' + name_list[2].upper()
+                print_name = name_list[0] + ' ' + name_list[1] + '\n' + name_list[2]
                 
         elif((len(name_list)==4)):
             font_size=50
-            print_name = name_list[0].upper() + ' ' + name_list[1].upper() + '\n' + name_list[2].upper() + ' ' + name_list[3].upper()
+            print_name = name_list[0] + ' ' + name_list[1] + '\n' + name_list[2] + ' ' + name_list[3]
         
         track_fill=random.choice([(255,255,0),(255,0,255),(0,255,255), (220,216,12)])
         track_font = ImageFont.truetype('sifonn.otf',track_font_size)            
