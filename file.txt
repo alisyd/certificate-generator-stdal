@@ -1,0 +1,21 @@
+if((len(name_list)==2)):
+            if((len(name_list[0]) + len(name_list[1])) > 10):
+                font_size=60
+        
+                print_name = name_list[0].upper() + '\n' + name_list[1].upper()
+            else:
+                font_size=70
+                print_name = name_list[0].upper() + '\n' + name_list[1].upper()
+            
+        elif((len(name_list)==3)):
+            if((len(name_list[0]) + len(name_list[1])) < 14):
+                font_size=60
+                print_name = name_list[0].upper() + ' ' + name_list[1].upper() + '\n' + name_list[2].upper()                            
+            else:
+                font_size=50
+                print_name = name_list[0].upper() + ' ' + name_list[1].upper() + '\n' + name_list[2].upper()
+                
+        elif((len(name_list)==4)):
+            font_size=50
+            print_name = name_list[0].upper() + ' ' + name_list[1].upper() + '\n' + name_list[2].upper() + ' ' + name_list[3].upper()
+        

@@ -23,11 +23,11 @@ class Certificate():
 
 
     def generate(self):
-        name = self.name.capitalize()
-        name_list = self.name.split(" ")
+        name = self.name
+        name_list = list(map(upper(),self.name.split()))
         
         track = self.track
-        track_list=self.track.split(" ")
+        track_list=list(map(capitalize(),self.track.split())
         img = Image.open("templates/template.jpg")
         width, height = img.size
         #self.draw_multiline_text(img,name,font,(225,81,175))
@@ -36,6 +36,9 @@ class Certificate():
         name_width, name_height = draw.textsize(name)
         print(name,width, name_width, height, name_height)
         print(self.user_id)
+        if(len(track_list)==1):
+            track_font_size=55
+            track_name=track_list[0].capitalize()
         if((len(track_list)==2)):
             if((len(track_list[0]) + len(track_list[1])) > 15):
                 track_font_size=45
@@ -48,7 +51,7 @@ class Certificate():
         elif((len(track_list)==3)):
             if((len(track_list[0]) + len(track_list[1])) < 14):
                 track_font_size=50
-                track_name = track_list[0].capitalize() + ' ' + track_list[1].capitalize() + ' ' + track_list[2].capitalize()                            
+                track_name = track_list[0].capitalize() + ' ' + track_list[1].capitalize() + '\n' + track_list[2].capitalize()                            
             else:
                 track_font_size=50
                 track_name = track_list[0].capitalize() + ' ' + track_list[1].capitalize() + '\n' + track_list[2].capitalize()
