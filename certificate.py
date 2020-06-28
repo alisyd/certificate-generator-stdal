@@ -6,7 +6,7 @@ from PIL import Image, ImageDraw, ImageFont
 import tempfile
 import textwrap as tw
 import random
-
+import hashlib
 
 class Certificate():
     def __init__(self, name=None,track=None, email=None, user_id=None, mission_id=None):
@@ -29,6 +29,7 @@ class Certificate():
         
         track = self.track
         track_list=list(map(lambda string: string.capitalize(), self.track.split()))
+        cert_id=hashlib.sha256(str(user_id)+str(misson_id))
         img = Image.open("templates/template.jpg")
         width, height = img.size
         #self.draw_multiline_text(img,name,font,(225,81,175))
@@ -87,9 +88,9 @@ class Certificate():
         track_fill=random.choice([(255,255,0),(255,0,255),(0,255,255), (220,216,12)])
         track_font = ImageFont.truetype('sifonn.otf',track_font_size)            
         draw.text(xy=(352,180), text=track_name, fill=track_fill, font=track_font)   
+        draw.text(xy=(539,782), text=cert_id, fill=(0,0,0), font=font_name)
         
 
         font_name = ImageFont.truetype('sifonn.otf',font_size)            
         draw.text(xy=(352,363), text=print_name, fill=(225,81,175), font=font_name)   
         img.save( "certificates/"+self.name+"_"+str(self.user_id)+ ".jpg")
-
