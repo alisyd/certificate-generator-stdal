@@ -29,7 +29,12 @@ class Certificate():
         
         track = self.track
         track_list=list(map(lambda string: string.capitalize(), self.track.split()))
-        cert_id=hashlib.sha256(str(self.user_id)+str(self.misson_id))
+        
+        hash=hashlib.blake2b(digest_size=5)
+        hash.update((str(self.user_id)+str(self.mission_id)).encode("utf-8"))
+        cert_id=hash.hexdigest()
+
+
         img = Image.open("templates/template.jpg")
         width, height = img.size
         #self.draw_multiline_text(img,name,font,(225,81,175))
@@ -87,9 +92,9 @@ class Certificate():
         
         track_fill=random.choice([(255,255,0),(255,0,255),(0,255,255), (220,216,12)])
         track_font = ImageFont.truetype('sifonn.otf',track_font_size)
-        cert_id_font=ImageFont.truetype('sifonn.otf',16)
+        cert_id_font=ImageFont.truetype('sifonn.otf',23)
         draw.text(xy=(352,180), text=track_name, fill=track_fill, font=track_font)   
-        draw.text(xy=(539,782), text=cert_id, fill=(0,0,0), font=font_name)
+        draw.text(xy=(544,788), text=cert_id, fill=(0,0,0), font=cert_id_font)
         
 
         font_name = ImageFont.truetype('sifonn.otf',font_size)            
