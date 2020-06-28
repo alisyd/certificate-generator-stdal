@@ -7,6 +7,7 @@ import tempfile
 import textwrap as tw
 import random
 
+
 class Certificate():
     def __init__(self, name=None,track=None, email=None, user_id=None, mission_id=None):
         self.track = track
@@ -24,10 +25,10 @@ class Certificate():
 
     def generate(self):
         name = self.name
-        name_list = list(map(upper(),self.name.split()))
+        name_list = list(map(lambda string: string.upper(),self.name.split()))
         
         track = self.track
-        track_list=list(map(capitalize(),self.track.split())
+        track_list=list(map(lambda string: string.capitalize(),self.track.split()))
         img = Image.open("templates/template.jpg")
         width, height = img.size
         #self.draw_multiline_text(img,name,font,(225,81,175))
