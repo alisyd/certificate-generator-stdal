@@ -30,73 +30,48 @@ class Certificate():
         track = self.track
         track_list=list(map(lambda string: string.capitalize(), self.track.split()))
         
-        hash=hashlib.blake2b(digest_size=5)
+        hash=hashlib.blake2b(digest_size=6)
         hash.update((str(self.user_id)+str(self.mission_id)).encode("utf-8"))
-        cert_id=hash.hexdigest()
+        cert_id="WID_"+hash.hexdigest()
 
 
         img = Image.open("templates/template.jpg")
         width, height = img.size
         #self.draw_multiline_text(img,name,font,(225,81,175))
-
+        
         draw = ImageDraw.Draw(img)
-        name_width, name_height = draw.textsize(name)
-        print(name,width, name_width, height, name_height)
+        name_wd, name_ht = draw.textsize(name)
+        track_wd, track_ht=draw.textsize(track)
+       
+        print(name,width,height, name_wd, name_ht)
+        print(track_wd, track_ht)
         print(self.user_id)
-        if(len(track_list)==1):
-            track_font_size=55
-            track_name=track_list[0]
-        if((len(track_list)==2)):
-            if((len(track_list[0]) + len(track_list[1])) > 15):
-                track_font_size=45
-        
-                track_name = track_list[0] + '\n' + track_list[1]
-            else:
-                track_font_size=55
-                track_name = track_list[0] + '\n' + track_list[1]
-            
-        elif((len(track_list)==3)):
-            if((len(track_list[0]) + len(track_list[1])) < 14):
-                track_font_size=50
-                track_name = track_list[0] + ' ' + track_list[1] + '\n' + track_list[2]                            
-            else:
-                track_font_size=50
-                track_name = track_list[0] + ' ' + track_list[1] + '\n' + track_list[2]
-                
-        elif((len(track_list)==4)):
-            track_font_size=50
-            track_name = track_list[0] + ' ' + track_list[1] + '\n' + track_list[2] + ' ' + track_list[3]
+        print("############")
+        track_name=" ".join(track_list)
         
         
+        print_name=" ".join(name_list)
         
-        if((len(name_list)==2)):
-            if((len(name_list[0]) + len(name_list[1])) > 10):
-                font_size=60
-        
-                print_name = name_list[0] + '\n' + name_list[1]
-            else:
-                font_size=70
-                print_name = name_list[0] + '\n' + name_list[1]
-            
-        elif((len(name_list)==3)):
-            if((len(name_list[0]) + len(name_list[1])) < 14):
-                font_size=60
-                print_name = name_list[0] + ' ' + name_list[1] + '\n' + name_list[2]                            
-            else:
-                font_size=50
-                print_name = name_list[0] + ' ' + name_list[1] + '\n' + name_list[2]
-                
-        elif((len(name_list)==4)):
-            font_size=50
-            print_name = name_list[0] + ' ' + name_list[1] + '\n' + name_list[2] + ' ' + name_list[3]
-        
-        track_fill=random.choice([(255,255,0),(255,0,255),(0,255,255), (220,216,12)])
-        track_font = ImageFont.truetype('sifonn.otf',track_font_size)
-        cert_id_font=ImageFont.truetype('sifonn.otf',23)
-        draw.text(xy=(352,180), text=track_name, fill=track_fill, font=track_font)   
-        draw.text(xy=(544,788), text=cert_id, fill=(0,0,0), font=cert_id_font)
+        font_name = ImageFont.truetype('Cinzel-Regular.ttf',42)        
+        track_font = ImageFont.truetype('Vidaloka-Regular.ttf',38)
+        cert_font_size=16
+        cert_id_font=ImageFont.truetype('sifonn.otf',cert_font_size)
+        name_width, name_height = draw.textsize(name,font=font_name)
+        track_width, track_height=draw.textsize(track,font=track_font)
+
+
+
+        draw.text(xy=((width-track_width)//2,(552-track_height)//2), text=track_name, fill=(55,59,60), font=track_font)   
+        draw.text(xy=(302,660+(189-cert_font_size)//2), text=cert_id, fill=(0,0,0), font=cert_id_font)
         
 
-        font_name = ImageFont.truetype('sifonn.otf',font_size)            
-        draw.text(xy=(352,363), text=print_name, fill=(225,81,175), font=font_name)   
-        img.save( "certificates/"+self.name+"_"+str(self.user_id)+ ".jpg")
+           
+        draw.text(xy=((width-name_width)//2,359+(75-name_height)//2), text=print_name, fill=(55,59,60), font=font_name)
+        
+        img.save( "certificates/"+self.name+"_"+cert_id+ ".jpg")
+        print(name,width,height, name_width, name_height)
+        print(track_width, track_height)
+        print(self.user_id)
+if __name__=="__main__":
+    cert=Certificate(name="lorenzo romano carlo avogardo", track="physical chemistry", email="emai", user_id=10, mission_id=10)
+    cert.generate()
