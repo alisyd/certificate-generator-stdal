@@ -28,8 +28,8 @@ class Certificate():
         name_list = list(map(lambda string: string.upper(), self.name.split()))
         
         track = self.track
-        track_list=list(map(lambda string: string.capitalize(), self.track.split()))
-        
+        track_list=list(map(lambda string: string.upper(), self.track.split()))
+        # hashing and generatinbg the cert_id
         hash=hashlib.blake2b(digest_size=6)
         hash.update((str(self.user_id)+str(self.mission_id)).encode("utf-8"))
         cert_id="WID_"+hash.hexdigest()
@@ -37,41 +37,43 @@ class Certificate():
 
         img = Image.open("templates/template.jpg")
         width, height = img.size
-        #self.draw_multiline_text(img,name,font,(225,81,175))
+       
         
         draw = ImageDraw.Draw(img)
-        name_wd, name_ht = draw.textsize(name)
-        track_wd, track_ht=draw.textsize(track)
-       
-        print(name,width,height, name_wd, name_ht)
-        print(track_wd, track_ht)
-        print(self.user_id)
-        print("############")
+    
         track_name=" ".join(track_list)
-        
-        
         print_name=" ".join(name_list)
         
-        font_name = ImageFont.truetype('Cinzel-Regular.ttf',42)        
-        track_font = ImageFont.truetype('Vidaloka-Regular.ttf',38)
+        font_name = ImageFont.truetype('Cinzel-Bold.ttf',42)        
+        track_font = ImageFont.truetype('Vidaloka-Regular.ttf',42)
         cert_font_size=16
         cert_id_font=ImageFont.truetype('sifonn.otf',cert_font_size)
-        name_width, name_height = draw.textsize(name,font=font_name)
-        track_width, track_height=draw.textsize(track,font=track_font)
-
-
-
-        draw.text(xy=((width-track_width)//2,(552-track_height)//2), text=track_name, fill=(55,59,60), font=track_font)   
-        draw.text(xy=(302,660+(189-cert_font_size)//2), text=cert_id, fill=(0,0,0), font=cert_id_font)
         
+        name_width, name_height = draw.textsize(print_name,font=font_name)
+        track_width, track_height=draw.textsize(track_name,font=track_font)
 
-           
-        draw.text(xy=((width-name_width)//2,359+(75-name_height)//2), text=print_name, fill=(55,59,60), font=font_name)
+        if int(track_width) >500:
+            track_font = ImageFont.truetype('Vidaloka-Regular.ttf',(42*500//int(track_width)))
+            track_width, track_height=draw.textsize(track_name,font=track_font)
+        if int(track_width) < 250:
+            track_font = ImageFont.truetype('Vidaloka-Regular.ttf', 50)
+            
+            track_width, track_height=draw.textsize(track_name,font=track_font)
+       
+        # drawing the track, name and cert_id
+
+        draw.text(xy=((width-track_width)/2,(522-track_height)/2), text=track_name, fill=(166,142,70), font=track_font)   
+        draw.text(xy=(302,746), text=cert_id, fill=(0,0,0), font=cert_id_font)
+        draw.text(xy=((width-name_width)/2,359+(75-name_height)/2), text=print_name, fill=(166,142,70), font=font_name)
         
-        img.save( "certificates/"+self.name+"_"+cert_id+ ".jpg")
+        img.save( "certificates/"+self.name.replace(" ","_")+"_"+cert_id+ ".jpg")
+        # for debugging
+        print("#"*40)
         print(name,width,height, name_width, name_height)
         print(track_width, track_height)
         print(self.user_id)
+        print("#"*40)
 if __name__=="__main__":
-    cert=Certificate(name="lorenzo romano carlo avogardo", track="physical chemistry", email="emai", user_id=10, mission_id=10)
+    cert=Certificate(name="syed ali hyder", track="quantitative modelling", email="emai", user_id=10, mission_id=10)
     cert.generate()
+
