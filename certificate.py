@@ -7,7 +7,7 @@ import tempfile
 import textwrap as tw
 import random
 import hashlib
-import threading
+
 class Certificate():
     def __init__(self, name=None,track=None, email=None, user_id=None):
         self.track = track
@@ -24,62 +24,49 @@ class Certificate():
 
 
     def generate(self):
-        name = self.name.strip()
+        name = self.name
+        name_list = list(map(lambda string: string.upper(), self.name.split()))
         
-        track = self.track.strip()
-        
+        track = self.track
+        track_list=list(map(lambda string: string.upper(), self.track.split()))
+        # hashing and generatinbg the cert_id
+        hash=hashlib.blake2b(digest_size=6)
+        hash.update((str(self.user_id)+str(self.mission_id)).encode("utf-8"))
+        cert_id="WID_"+hash.hexdigest()
 
 
         img = Image.open("templates/template.jpg")
         width, height = img.size
-        track_font = ImageFont.truetype('Vidaloka-Regular.ttf',42)
-
-        font_name = ImageFont.truetype('Cinzel-Bold.ttf',42)        
-
+       
+        
         draw = ImageDraw.Draw(img)
     
-        track_name=track.upper()
-        print_name=name.upper()
-        track_width, track_height=draw.textsize(track_name,font=track_font)
-        name_width, name_height = draw.textsize(print_name,font=font_name)
+        track_name=" ".join(track_list)
+        print_name=" ".join(name_list)
         
-        def track_draw():
-            track_font = ImageFont.truetype('Vidaloka-Regular.ttf',42)
-            track_width, track_height=draw.textsize(track_name,font=track_font)
-            if int(track_width) >500:
-                track_font = ImageFont.truetype('Vidaloka-Regular.ttf',(42*500//int(track_width)))
-                track_width, track_height=draw.textsize(track_name,font=track_font)
-            if int(track_width) < 250:
-                track_font = ImageFont.truetype('Vidaloka-Regular.ttf', 50)                
-                track_width, track_height=draw.textsize(track_name,font=track_font)
-            draw.text(xy=((width-track_width)/2,(522-track_height)/2), text=track_name, fill=(166,142,70), font=track_font)   
-        
-        def name_draw():
-            draw.text(xy=((width-name_width)/2,359+(75-name_height)/2), text=print_name, fill=(166,142,70), font=font_name)
-        
-        def certificate_id_draw():
-            hash=hashlib.blake2b(digest_size=6)
-            hash.update((str(self.user_id)+str(self.mission_id)).encode("utf-8"))
-            cert_id="WID_"+hash.hexdigest()            
-            cert_id_font=ImageFont.truetype('sifonn.otf',16)            
-            draw.text(xy=(302,746), text=cert_id, fill=(0,0,0), font=cert_id_font)
-        
-     
-        
-        t1=threading.Thread(target=track_draw)
-        t2=threading.Thread(target=name_draw)
-        t3=threading.Thread(target=certificate_id_draw)
-        t1.start()
-        t2.start()
-        t3.start()
-        t1.join()
-        t2.join()
-        t3.join()
         font_name = ImageFont.truetype('Cinzel-Bold.ttf',42)        
+        track_font = ImageFont.truetype('Vidaloka-Regular.ttf',42)
+        cert_font_size=16
+        cert_id_font=ImageFont.truetype('sifonn.otf',cert_font_size)
+        
         name_width, name_height = draw.textsize(print_name,font=font_name)
         track_width, track_height=draw.textsize(track_name,font=track_font)
 
-        img.save( "certificates/"+self.name.replace(" ","_")+"_usr: "+str(self.user_id)+"_"+"msn:"+str(self.mission_id) +".jpg")
+        if int(track_width) >500:
+            track_font = ImageFont.truetype('Vidaloka-Regular.ttf',(42*500//int(track_width)))
+            track_width, track_height=draw.textsize(track_name,font=track_font)
+        if int(track_width) < 250:
+            track_font = ImageFont.truetype('Vidaloka-Regular.ttf', 50)
+            
+            track_width, track_height=draw.textsize(track_name,font=track_font)
+       
+        # drawing the track, name and cert_id
+
+        draw.text(xy=((width-track_width)/2,(522-track_height)/2), text=track_name, fill=(166,142,70), font=track_font)   
+        draw.text(xy=(302,746), text=cert_id, fill=(0,0,0), font=cert_id_font)
+        draw.text(xy=((width-name_width)/2,359+(75-name_height)/2), text=print_name, fill=(166,142,70), font=font_name)
+        
+        img.save( "certificates/"+self.name.replace(" ","_")+"_"+cert_id+ ".jpg")
         # for debugging
         print("#"*40)
         print(name,width,height, name_width, name_height)
