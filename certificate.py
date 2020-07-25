@@ -9,7 +9,7 @@ import random
 import hashlib
 import threading
 class Certificate():
-    def __init__(self, name=None,track=None, email=None, user_id=None, mission_id=None):
+    def __init__(self, name=None,track=None, email=None, user_id=None):
         self.track = track
         self.name = name
         self.email = email
