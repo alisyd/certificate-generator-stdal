@@ -1,3 +1,2 @@
-# certificate-generator-standalone
-this is just the modification of certificate generator,
-it takes the credentials such as name, track and generates the certificate accordingly
+# Certificate generator
+Simple automatic certificate generator which can be used to automate certificate creation, process for event participants
